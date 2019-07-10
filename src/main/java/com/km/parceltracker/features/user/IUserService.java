@@ -4,10 +4,10 @@ public interface IUserService {
 
 	User saveUser(User user);
 
-	User getUserById(Long id);
+	User getUserByAuthentication();
 
 	User updateUser(User user);
 
-	void deleteUser(Long id);
+	void deleteUser();
 
 }
