@@ -1,12 +1,14 @@
 package com.km.parceltracker.features.user;
 
+import javax.validation.Valid;
+
 public interface IUserService {
 
-	User saveUser(User user);
+	User saveUser(@Valid User user);
 
 	User getUserByAuthentication();
 
-	User updateUser(User user);
+	User updateUser(@Valid User user);
 
 	void deleteUser();
 

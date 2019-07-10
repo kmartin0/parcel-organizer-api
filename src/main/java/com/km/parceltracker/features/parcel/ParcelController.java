@@ -1,5 +1,6 @@
 package com.km.parceltracker.features.parcel;
 
+import com.km.parceltracker.features.parcelstatus.ParcelStatus;
 import com.km.parceltracker.util.Endpoints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class ParcelController {
 
 	@PostMapping(path = Endpoints.SAVE_PARCEL, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Parcel saveParcel(@Validated({Parcel.Create.class}) @RequestBody Parcel parcel) {
+	public Parcel saveParcel(@Validated({Parcel.Create.class, ParcelStatus.Identifier.class}) @RequestBody Parcel parcel) {
 
 		return parcelService.saveParcel(parcel);
 	}

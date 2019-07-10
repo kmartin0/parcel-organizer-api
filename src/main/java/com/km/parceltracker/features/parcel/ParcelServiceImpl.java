@@ -1,6 +1,8 @@
 package com.km.parceltracker.features.parcel;
 
 import com.km.parceltracker.exception.ResourceNotFoundException;
+import com.km.parceltracker.features.parcelstatus.IParcelStatusService;
+import com.km.parceltracker.features.parcelstatus.ParcelStatus;
 import com.km.parceltracker.features.user.User;
 import com.km.parceltracker.security.SecurityHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,17 +18,24 @@ public class ParcelServiceImpl implements IParcelService {
 
 	private final ParcelRepository parcelRepository;
 
-	public ParcelServiceImpl(ParcelRepository parcelRepository) {
+	private final IParcelStatusService parcelStatusService;
+
+	public ParcelServiceImpl(ParcelRepository parcelRepository, IParcelStatusService parcelStatusService) {
 		this.parcelRepository = parcelRepository;
+		this.parcelStatusService = parcelStatusService;
 	}
 
 	@Override
-	@Validated({Parcel.Create.class})
+	@Validated({Parcel.Create.class, ParcelStatus.Identifier.class})
 	@PreAuthorize("isAuthenticated()")
 	public Parcel saveParcel(Parcel parcel) {
 		// Get logged in user and bind it to the parcel.
 		User user = SecurityHelper.getPrincipalUser();
 		parcel.setUser(user);
+
+		// Set the parcel status.
+		ParcelStatus parcelStatus = parcelStatusService.getParcelStatus(parcel.getParcelStatus().getId());
+		parcel.setParcelStatus(parcelStatus);
 
 		// Set the last updated time.
 		parcel.setLastUpdated(new Date());

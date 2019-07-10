@@ -1,16 +1,22 @@
 package com.km.parceltracker.features.parcel;
 
+import com.km.parceltracker.features.parcelstatus.ParcelStatus;
 import com.km.parceltracker.features.user.User;
+import com.km.parceltracker.util.CacheUtils;
 import lombok.Data;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.Date;
 
 @Data
 @Entity
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CacheUtils.PARCEL_CACHE_REGION)
 public class Parcel {
 
 	@Id
@@ -23,7 +29,7 @@ public class Parcel {
 	@JoinColumn(name = "user", nullable = false)
 	private User user;
 
-	@Column(name = "title", nullable = false, length = 45, unique = true)
+	@Column(name = "title", nullable = false, length = 45)
 	@NotBlank(groups = {Create.class, Update.class})
 	@Length(max = 45, groups = {Create.class, Update.class})
 	private String title;
@@ -39,9 +45,11 @@ public class Parcel {
 	@Column(name = "tracking_url", nullable = true, columnDefinition = "LONGTEXT")
 	private String trackingUrl;
 
-	@Column(name = "delivery_status", nullable = false)
-	@NotBlank(groups = {Create.class, Update.class})
-	private String deliveryStatus;
+	@ManyToOne
+	@JoinColumn(name = "parcel_status", nullable = false)
+	@NotNull(groups = {Create.class, Update.class})
+	@Valid
+	private ParcelStatus parcelStatus;
 
 	@Column(name = "last_updated", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
