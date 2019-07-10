@@ -1,5 +1,6 @@
 package com.km.parceltracker.security;
 
+import com.km.parceltracker.features.user.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,9 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 public class UserPrincipal implements UserDetails {
 
-	private Long id;
-	private String password;
-	private String username;
+	private User user;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -25,16 +24,12 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return password;
+		return user.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return username;
-	}
-
-	public Long getId() {
-		return id;
+		return user.getUsername();
 	}
 
 	@Override
@@ -55,5 +50,9 @@ public class UserPrincipal implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public User getUser() {
+		return user;
 	}
 }

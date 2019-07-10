@@ -23,9 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		User user = userRepository.findByUsername(s).orElseThrow(() -> new InvalidGrantException("Bad credentials"));
 
 		return new UserPrincipal(
-				user.getId(),
-				user.getPassword(),
-				user.getUsername()
+				user
 		);
 	}
 }

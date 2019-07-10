@@ -1,7 +1,6 @@
 package com.km.parceltracker.features.user;
 
 import com.km.parceltracker.exception.ResourceAlreadyExistsException;
-import com.km.parceltracker.exception.ResourceNotFoundException;
 import com.km.parceltracker.security.SecurityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,27 +40,19 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	@PreAuthorize("isAuthenticated()")
 	public User getUserByAuthentication() {
-		// Get the authenticated user id.
-		Long authenticatedUserId = SecurityHelper.getPrincipal().getId();
-
 		// Return the user or throw resource not found exception.
-		return userRepository.findById(authenticatedUserId)
-				.orElseThrow(() -> new ResourceNotFoundException(User.class, authenticatedUserId));
+		return SecurityHelper.getPrincipalUser();
 	}
 
 	@Override
 	@Validated({User.Update.class})
 	@PreAuthorize("isAuthenticated()")
 	public User updateUser(User user) {
-		// Get the authenticated user id.
-		Long authenticatedUserId = SecurityHelper.getPrincipal().getId();
-
-		// Get the user that needs to be updated. Or throw resource not found exception.
-		User userToUpdate = userRepository.findById(authenticatedUserId)
-				.orElseThrow(() -> new ResourceNotFoundException(User.class, authenticatedUserId));
+		// Get the user that needs to be updated.
+		User userToUpdate = SecurityHelper.getPrincipalUser();
 
 		// Don't allow for the id to be changed.
-		user.setId(authenticatedUserId);
+		user.setId(userToUpdate.getId());
 
 		// If password was changed encode it. Otherwise keep the old password.
 		if (user.getPassword() == null) user.setPassword(userToUpdate.getPassword());
@@ -74,12 +65,8 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	@PreAuthorize("isAuthenticated()")
 	public void deleteUser() {
-		// Get the authenticated user id.
-		Long authenticatedUserId = SecurityHelper.getPrincipal().getId();
-
-		// Get the user that needs to be deleted. Or throw resource not found exception.
-		User userToDelete = userRepository.findById(authenticatedUserId)
-				.orElseThrow(() -> new ResourceNotFoundException(User.class, authenticatedUserId));
+		// Get the user that needs to be deleted.
+		User userToDelete = SecurityHelper.getPrincipalUser();
 
 		// Delete the user
 		userRepository.delete(userToDelete);
