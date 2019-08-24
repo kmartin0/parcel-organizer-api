@@ -33,7 +33,7 @@ public class ParcelServiceImpl implements IParcelService {
 		User user = SecurityHelper.getPrincipalUser();
 		parcel.setUser(user);
 
-		// Set the parcel status.
+		// Set the parcel error.
 		ParcelStatus parcelStatus = parcelStatusService.getParcelStatus(parcel.getParcelStatus().getId());
 		parcel.setParcelStatus(parcelStatus);
 

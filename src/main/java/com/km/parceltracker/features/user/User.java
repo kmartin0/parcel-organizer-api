@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 
@@ -21,10 +22,16 @@ public class User {
 	@Null(groups = {Create.class})
 	private Long id;
 
-	@Column(name = "username", nullable = false, length = 45, unique = true)
+	@Column(name = "email", nullable = false, length = 45, unique = true)
 	@NotBlank(groups = {Create.class, Update.class})
 	@Length(max = 45, groups = {Create.class, Update.class})
-	private String username;
+	@Email
+	private String email;
+
+	@Column(name = "name", nullable = false, length = 45)
+	@NotBlank(groups = {Create.class, Update.class})
+	@Length(max = 45, groups = {Create.class, Update.class})
+	private String name;
 
 	@Column(name = "password", nullable = false, columnDefinition = "LONGTEXT")
 	@NotBlank(groups = {Create.class})

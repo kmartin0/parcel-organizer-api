@@ -11,29 +11,30 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 class ErrorResponse implements Serializable {
-	// The HTTP Status Code
-	private int code;
-
-	// A developer-facing human-readable error message in English.
-	private String message;
 
 	// The Status
-	private String status;
+	private String error;
+
+	// A developer-facing human-readable error description in English.
+	private String description;
+
+	// The HTTP Status Code
+	private int code;
 
 	// (Optional) Additional error information that the client code can use to handle
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private TargetError[] details;
 
-	ErrorResponse(ApiErrorCode apiErrorCode, String message, TargetError... details) {
+	ErrorResponse(ApiErrorCode apiErrorCode, String description, TargetError... details) {
 		this.code = apiErrorCode.getHttpStatus().value();
-		this.message = message;
-		this.status = apiErrorCode.name();
+		this.description = description;
+		this.error = apiErrorCode.name();
 		this.details = details;
 	}
 
-	ErrorResponse(ApiErrorCode apiErrorCode, String message) {
+	ErrorResponse(ApiErrorCode apiErrorCode, String description) {
 		this.code = apiErrorCode.getHttpStatus().value();
-		this.message = message;
-		this.status = apiErrorCode.name();
+		this.description = description;
+		this.error = apiErrorCode.name();
 	}
 }

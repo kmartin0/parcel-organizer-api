@@ -17,11 +17,11 @@ public class MessageResolver {
 	}
 
 	/**
-	 * Get a message with arguments from the message source using the message key.
+	 * Get a description with arguments from the description source using the description key.
 	 *
-	 * @param msgKey String Key of the message.
-	 * @param args   Object... argument parameters of the message.
-	 * @return String message from message source.
+	 * @param msgKey String Key of the description.
+	 * @param args   Object... argument parameters of the description.
+	 * @return String description from description source.
 	 */
 	public String getMessage(String msgKey, Object... args) {
 		try {

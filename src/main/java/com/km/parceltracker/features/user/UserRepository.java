@@ -15,6 +15,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	List<User> findAll();
 
 	@QueryHints(value = {@QueryHint(name = CacheUtils.QUERY_HINT_CACHEABLE_KEY, value = CacheUtils.QUERY_HINT_CACHEABLE_TRUE)})
-	Optional<User> findByUsername(String username);
+	Optional<User> findByEmail(String email);
 
 }

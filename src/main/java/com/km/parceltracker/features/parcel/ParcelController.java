@@ -23,6 +23,7 @@ public class ParcelController {
 
 	@PostMapping(path = Endpoints.SAVE_PARCEL, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("isAuthenticated()")
 	public Parcel saveParcel(@Validated({Parcel.Create.class, ParcelStatus.Identifier.class}) @RequestBody Parcel parcel) {
 
 		return parcelService.saveParcel(parcel);

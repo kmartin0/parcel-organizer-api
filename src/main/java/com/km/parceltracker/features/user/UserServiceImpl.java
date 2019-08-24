@@ -26,8 +26,8 @@ public class UserServiceImpl implements IUserService {
 	@Validated({User.Create.class})
 	public User saveUser(User user) {
 		// Validate if the user doesn't exist yet. Or throw resource exists exception.
-		userRepository.findByUsername(user.getUsername()).ifPresent(u -> {
-			throw new ResourceAlreadyExistsException(User.class, "username", u.getUsername());
+		userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
+			throw new ResourceAlreadyExistsException(User.class, "email", u.getEmail());
 		});
 
 		// Encrypt the user password.

@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String s) {
-		User user = userRepository.findByUsername(s).orElseThrow(() -> new InvalidGrantException("Bad credentials"));
+		User user = userRepository.findByEmail(s).orElseThrow(() -> new InvalidGrantException("Bad credentials"));
 
 		return new UserPrincipal(
 				user

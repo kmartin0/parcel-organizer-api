@@ -10,6 +10,10 @@ import java.util.List;
 
 public interface ParcelRepository extends CrudRepository<Parcel, Long> {
 
+	@Override
+	@QueryHints(value = {@QueryHint(name = CacheUtils.QUERY_HINT_CACHEABLE_KEY, value = CacheUtils.QUERY_HINT_CACHEABLE_TRUE)})
+	List<Parcel> findAll();
+
 	@QueryHints(value = {@QueryHint(name = CacheUtils.QUERY_HINT_CACHEABLE_KEY, value = CacheUtils.QUERY_HINT_CACHEABLE_TRUE)})
 	List<Parcel> findAllByUser(User user);
 

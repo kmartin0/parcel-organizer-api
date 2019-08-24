@@ -9,6 +9,6 @@ public class TargetError {
 	// Key of the field.
 	private final String target;
 
-	// Error message describing the error to an end user.
+	// Error description describing the error to an end user.
 	private final String error;
 }
