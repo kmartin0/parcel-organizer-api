@@ -7,5 +7,5 @@ public interface IParcelStatusService {
 
 	ParcelStatus getParcelStatus(Long id);
 
-	ParcelStatus getParcelStatus(ParcelStatusEnum status);
+	ParcelStatus getParcelStatus(String status);
 }

@@ -23,6 +23,7 @@ public class Parcel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	@Null(groups = {Create.class})
+	@NotNull(groups = {Update.class})
 	private Long id;
 
 	@ManyToOne

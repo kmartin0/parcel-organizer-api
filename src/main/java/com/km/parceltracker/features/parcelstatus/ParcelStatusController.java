@@ -32,7 +32,7 @@ public class ParcelStatusController {
 
 	@GetMapping(path = Endpoints.GET_PARCEL_STATUS_BY_STATUS)
 	@ResponseStatus(HttpStatus.OK)
-	public ParcelStatus getParcelStatusByStatus(@PathVariable ParcelStatusEnum parcelStatus) {
+	public ParcelStatus getParcelStatusByStatus(@PathVariable String parcelStatus) {
 		return ParcelStatusService.getParcelStatus(parcelStatus);
 	}
 }

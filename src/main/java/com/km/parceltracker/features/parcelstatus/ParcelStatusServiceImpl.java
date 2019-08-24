@@ -26,8 +26,13 @@ public class ParcelStatusServiceImpl implements IParcelStatusService {
 	}
 
 	@Override
-	public ParcelStatus getParcelStatus(ParcelStatusEnum status) {
-		return parcelStatusRepository.findByStatus(status)
-				.orElseThrow(() -> new ResourceNotFoundException(ParcelStatus.class, status));
+	public ParcelStatus getParcelStatus(String status) {
+		try {
+			ParcelStatusEnum parcelStatusEnum = ParcelStatusEnum.valueOf(status);
+			return parcelStatusRepository.findByStatus(parcelStatusEnum)
+					.orElseThrow(() -> new ResourceNotFoundException(ParcelStatus.class, status));
+		} catch (IllegalArgumentException ex) {
+			throw new ResourceNotFoundException(ParcelStatus.class, status);
+		}
 	}
 }

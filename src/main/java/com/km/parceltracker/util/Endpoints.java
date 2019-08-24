@@ -16,6 +16,6 @@ public class Endpoints {
 
 	// Parcel Status Endpoints
 	public static final String GET_PARCEL_STATUSES = "/parcel-statuses";
-	public static final String GET_PARCEL_STATUS_BY_ID = "/parcel-statuses/{parcelStatusId}";
-	public static final String GET_PARCEL_STATUS_BY_STATUS = "/parcel-statuses/{parcelStatus}";
+	public static final String GET_PARCEL_STATUS_BY_ID = "/parcel-statuses/id/{parcelStatusId}";
+	public static final String GET_PARCEL_STATUS_BY_STATUS = "/parcel-statuses/status/{parcelStatus}";
 }
