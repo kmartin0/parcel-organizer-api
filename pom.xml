@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.km</groupId>
-    <artifactId>parcel tracker</artifactId>
+    <artifactId>parcel organizer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>parcel tracker</name>
-    <description>Parcel Tracker Api</description>
+    <name>parcel organizer</name>
+    <description>Parcel Organizer Api</description>
 
     <properties>
         <java.version>1.8</java.version>

@@ -2,7 +2,7 @@
 INSERT INTO oauth_client_details
 (client_id, client_secret, scope, authorized_grant_types,
  authorities, access_token_validity, refresh_token_validity)
-VALUES ('parcel-tracker-android', '$2a$12$o3dmbF3ElqPL1ApJ.9R/Qu7cVBMyV8pn80.HPFPdKO/jerqGJiXZe', 'all',
+VALUES ('parcel-organizer-android', '$2a$12$o3dmbF3ElqPL1ApJ.9R/Qu7cVBMyV8pn80.HPFPdKO/jerqGJiXZe', 'all',
         'password,refresh_token',
         'ROLE_CLIENT', 50000, 256300);
 
