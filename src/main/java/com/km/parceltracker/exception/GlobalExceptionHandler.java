@@ -132,4 +132,16 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<>(responseBody, apiErrorCode.getHttpStatus());
 	}
+
+	@ExceptionHandler({ForbiddenException.class})
+	public ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException e) {
+		ApiErrorCode apiErrorCode = ApiErrorCode.PERMISSION_DENIED;
+		ErrorResponse responseBody = new ErrorResponse(
+				apiErrorCode,
+				e.getDescription(),
+				new TargetError(e.getTarget(), e.getTargetDescription())
+		);
+
+		return new ResponseEntity<>(responseBody, apiErrorCode.getHttpStatus());
+	}
 }

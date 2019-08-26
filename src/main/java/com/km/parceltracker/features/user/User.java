@@ -34,7 +34,7 @@ public class User {
 	private String name;
 
 	@Column(name = "password", nullable = false, columnDefinition = "LONGTEXT")
-	@NotBlank(groups = {Create.class})
+	@NotBlank(groups = {Create.class, Update.class})
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 

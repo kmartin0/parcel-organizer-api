@@ -1,7 +1,9 @@
 package com.km.parceltracker.features.user;
 
+import com.km.parceltracker.exception.ForbiddenException;
 import com.km.parceltracker.exception.ResourceAlreadyExistsException;
 import com.km.parceltracker.security.SecurityHelper;
+import com.km.parceltracker.util.MessageResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +18,13 @@ public class UserServiceImpl implements IUserService {
 
 	private final PasswordEncoder passwordEncoder;
 
+	private final MessageResolver messageResolver;
+
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, MessageResolver messageResolver) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.messageResolver = messageResolver;
 	}
 
 	@Override
@@ -54,9 +59,23 @@ public class UserServiceImpl implements IUserService {
 		// Don't allow for the id to be changed.
 		user.setId(userToUpdate.getId());
 
-		// If password was changed encode it. Otherwise keep the old password.
-		if (user.getPassword() == null) user.setPassword(userToUpdate.getPassword());
-		else user.setPassword(passwordEncoder.encode(user.getPassword()));
+		// Check if the supplied password matches the current password. Else throw ForbiddenException
+		if (passwordEncoder.matches(user.getPassword(), userToUpdate.getPassword())) {
+			user.setPassword(userToUpdate.getPassword());
+		} else {
+			throw new ForbiddenException(
+					messageResolver.getMessage("message.incorrect.credentials"),
+					"password",
+					messageResolver.getMessage("message.incorrect.password")
+			);
+		}
+
+		// If the email is being changed, check if the new email is not already in use.
+		if (!user.getEmail().equals(userToUpdate.getEmail())) {
+			userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
+				throw new ResourceAlreadyExistsException(User.class, "email", u.getEmail());
+			});
+		}
 
 		// Save and return the updated user.
 		return userRepository.save(user);
