@@ -1,6 +1,7 @@
 package com.km.parcelorganizer.exception;
 
 import com.km.parcelorganizer.util.MessageResolver;
+import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 import java.util.ArrayList;
 
 @RestControllerAdvice
@@ -55,6 +59,32 @@ public class GlobalExceptionHandler {
 			} else {
 				errors.add(new TargetError(error.getCode(), error.getDefaultMessage()));
 			}
+		}
+
+		ErrorResponse responseBody = new ErrorResponse(
+				apiErrorCode,
+				messageResolver.getMessage("message.invalid.arguments"),
+				errors.toArray(new TargetError[0])
+		);
+
+		return new ResponseEntity<>(responseBody, apiErrorCode.getHttpStatus());
+	}
+
+	@ExceptionHandler({ConstraintViolationException.class})
+	public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+		ArrayList<TargetError> errors = new ArrayList<>();
+		ApiErrorCode apiErrorCode = ApiErrorCode.INVALID_ARGUMENTS;
+
+		// Constructs the path disregarding the first two path nodes.
+		for (ConstraintViolation violation : e.getConstraintViolations()) {
+			int i = 0;
+			StringBuilder errorPath = new StringBuilder();
+			for (Path.Node node : violation.getPropertyPath()) {
+				if (i > 1) errorPath.append(node.getName()).append(".");
+				i++;
+			}
+			errorPath.deleteCharAt(errorPath.length() - 1);
+			errors.add(new TargetError(errorPath.toString(), violation.getMessage()));
 		}
 
 		ErrorResponse responseBody = new ErrorResponse(
