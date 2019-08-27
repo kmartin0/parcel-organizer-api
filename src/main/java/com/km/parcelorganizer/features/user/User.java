@@ -13,6 +13,7 @@ import javax.validation.constraints.Null;
 
 @Data
 @Entity
+@Table(name="\"user\"")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CacheUtils.USER_CACHE_REGION)
 public class User {
 
@@ -33,7 +34,7 @@ public class User {
 	@Length(max = 45, groups = {Create.class, Update.class})
 	private String name;
 
-	@Column(name = "password", nullable = false, columnDefinition = "LONGTEXT")
+	@Column(name = "password", nullable = false, columnDefinition = "TEXT")
 	@NotBlank(groups = {Create.class, Update.class})
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;

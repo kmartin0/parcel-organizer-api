@@ -27,7 +27,7 @@ public class Parcel {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "user", nullable = false)
+	@JoinColumn(name = "\"user\"", nullable = false)
 	private User user;
 
 	@Column(name = "title", nullable = false, length = 45)
@@ -43,7 +43,7 @@ public class Parcel {
 	@Length(max = 45, groups = {Create.class, Update.class})
 	private String courier;
 
-	@Column(name = "tracking_url", nullable = true, columnDefinition = "LONGTEXT")
+	@Column(name = "tracking_url", nullable = true, columnDefinition = "TEXT")
 	private String trackingUrl;
 
 	@ManyToOne
