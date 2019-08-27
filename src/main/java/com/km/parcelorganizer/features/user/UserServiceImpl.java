@@ -101,7 +101,7 @@ public class UserServiceImpl implements IUserService {
 		User userToUpdate = SecurityHelper.getPrincipalUser();
 
 		// encode and save new password if the old password matches the user password. Else throw forbidden exception.
-		if (passwordEncoder.matches(changePasswordDto.getOldPassword(), userToUpdate.getPassword())) {
+		if (passwordEncoder.matches(changePasswordDto.getCurrentPassword(), userToUpdate.getPassword())) {
 			userToUpdate.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
 			userRepository.save(userToUpdate);
 		} else {
