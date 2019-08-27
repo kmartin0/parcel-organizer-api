@@ -49,4 +49,12 @@ public class UserController {
 		userService.deleteUser();
 	}
 
+	@PostMapping(path = Endpoints.CHANGE_PASSWORD)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("isAuthenticated()")
+	public void changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
+
+		userService.changePassword(changePasswordDto);
+	}
+
 }

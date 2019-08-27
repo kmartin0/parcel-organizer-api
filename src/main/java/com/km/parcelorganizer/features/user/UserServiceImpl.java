@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+
 @Service
 @Validated
 public class UserServiceImpl implements IUserService {
@@ -89,6 +91,26 @@ public class UserServiceImpl implements IUserService {
 
 		// Delete the user
 		userRepository.delete(userToDelete);
+	}
+
+	@Override
+	@PreAuthorize("isAuthenticated()")
+	@Validated({ChangePasswordDto.Valid.class, User.Create.class})
+	public void changePassword(ChangePasswordDto changePasswordDto) {
+		// Get the user that needs to be updated.
+		User userToUpdate = SecurityHelper.getPrincipalUser();
+
+		// encode and save new password if the old password matches the user password. Else throw forbidden exception.
+		if (passwordEncoder.matches(changePasswordDto.getOldPassword(), userToUpdate.getPassword())) {
+			userToUpdate.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+			userRepository.save(userToUpdate);
+		} else {
+			throw new ForbiddenException(
+					messageResolver.getMessage("message.incorrect.credentials"),
+					"oldPassword",
+					messageResolver.getMessage("message.incorrect.password")
+			);
+		}
 	}
 
 }

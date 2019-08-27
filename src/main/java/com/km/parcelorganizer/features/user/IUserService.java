@@ -12,4 +12,6 @@ public interface IUserService {
 
 	void deleteUser();
 
+	void changePassword(@Valid ChangePasswordDto changePasswordDto);
+
 }
