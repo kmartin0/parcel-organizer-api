@@ -1,11 +1,13 @@
 package com.km.parcelorganizer.exception;
 
 import com.km.parcelorganizer.util.MessageResolver;
+import org.hibernate.exception.JDBCConnectionException;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeException;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
+import java.net.ConnectException;
 import java.util.ArrayList;
 
 @RestControllerAdvice
@@ -170,6 +173,17 @@ public class GlobalExceptionHandler {
 				apiErrorCode,
 				e.getDescription(),
 				new TargetError(e.getTarget(), e.getTargetDescription())
+		);
+
+		return new ResponseEntity<>(responseBody, apiErrorCode.getHttpStatus());
+	}
+
+	@ExceptionHandler({CannotCreateTransactionException.class})
+	public ResponseEntity<ErrorResponse> handleCannotCreateTransactionException(CannotCreateTransactionException e) {
+		ApiErrorCode apiErrorCode = ApiErrorCode.UNAVAILABLE;
+		ErrorResponse responseBody = new ErrorResponse(
+				apiErrorCode,
+				messageResolver.getMessage("message.service.unavailable")
 		);
 
 		return new ResponseEntity<>(responseBody, apiErrorCode.getHttpStatus());
