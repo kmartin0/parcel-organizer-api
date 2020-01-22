@@ -1,8 +1,6 @@
 package com.km.parcelorganizer.exception;
 
 import com.km.parcelorganizer.util.MessageResolver;
-import org.hibernate.exception.JDBCConnectionException;
-import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,7 +18,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
-import java.net.ConnectException;
 import java.util.ArrayList;
 
 @RestControllerAdvice

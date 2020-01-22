@@ -56,8 +56,13 @@ class ParcelStatusServiceTests {
 	}
 
 	@Test
-	void testGetNonExistentParcelStatusByName_throwsResourceNotFoundException() {
+	void testGetNonExistentParcelStatusEnumByName_throwsResourceNotFoundException() {
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> parcelStatusService.getParcelStatus("InvalidParcelStatus"));
+	}
+
+	@Test
+	void testGetNonExistentParcelStatusRepositoryByName_throwsResourceNotFoundException() {
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> parcelStatusService.getParcelStatus("DELIVERED"));
 	}
 
 	private List<ParcelStatus> getTestData() {

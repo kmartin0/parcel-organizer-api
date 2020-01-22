@@ -3,7 +3,9 @@ package com.km.parcelorganizer.features.parcel;
 import com.km.parcelorganizer.features.parcelstatus.ParcelStatus;
 import com.km.parcelorganizer.features.user.User;
 import com.km.parcelorganizer.util.CacheUtils;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 
@@ -16,6 +18,8 @@ import java.util.Date;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CacheUtils.PARCEL_CACHE_REGION)
 public class Parcel {
 

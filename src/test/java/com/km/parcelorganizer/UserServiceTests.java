@@ -87,8 +87,24 @@ class UserServiceTests {
 		Mockito.when(passwordEncoder.matches(authenticatedUser.getPassword(), updatedUser.getPassword())).thenReturn(true);
 
 		userService.updateUser(updatedUser);
-
+		Set<ConstraintViolation<User>> constraintViolations = validator.validate(updatedUser, User.Update.class);
+		Assertions.assertEquals(0, constraintViolations.size());
 		Mockito.verify(userRepository, Mockito.times(1)).save(updatedUser);
+	}
+
+	@Test
+	void testUpdateUserNotUpdatingEmail_findByEmailNotQueried() {
+		User authenticatedUser = setAuthenticatedUser();
+		User updatedUser = new User();
+		updatedUser.setPassword("pass");
+		updatedUser.setName("newName");
+		updatedUser.setEmail(authenticatedUser.getEmail());
+
+		Mockito.when(passwordEncoder.matches(authenticatedUser.getPassword(), updatedUser.getPassword())).thenReturn(true);
+
+		userService.updateUser(updatedUser);
+
+		Mockito.verify(userRepository, Mockito.times(0)).findByEmail(any());
 	}
 
 	@Test
@@ -155,6 +171,12 @@ class UserServiceTests {
 		Mockito.when(passwordEncoder.matches(authenticatedUser.getPassword(), changePasswordDto.getCurrentPassword())).thenReturn(false);
 
 		Assertions.assertThrows(ForbiddenException.class, () -> userService.changePassword(changePasswordDto));
+	}
+
+	@Test
+	void testGetUserByAuthentication_returnsAuthenticatedUser() {
+		User authenticatedUser = setAuthenticatedUser();
+		Assertions.assertEquals(authenticatedUser, userService.getUserByAuthentication());
 	}
 
 	/**
