@@ -18,7 +18,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -50,21 +50,21 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler({MethodArgumentNotValidException.class})
 	public ResponseEntity<ErrorResponse> handleMethodArgumentsInvalidException(MethodArgumentNotValidException e) {
-		ArrayList<TargetError> errors = new ArrayList<>();
+		HashMap<String, String> errors = new HashMap<>();
 		ApiErrorCode apiErrorCode = ApiErrorCode.INVALID_ARGUMENTS;
 
 		for (ObjectError error : e.getBindingResult().getAllErrors()) {
 			if (error instanceof FieldError) {
-				errors.add(new TargetError(((FieldError) error).getField(), error.getDefaultMessage()));
+				errors.put(((FieldError) error).getField(), error.getDefaultMessage());
 			} else {
-				errors.add(new TargetError(error.getCode(), error.getDefaultMessage()));
+				errors.put(error.getCode(), error.getDefaultMessage());
 			}
 		}
 
 		ErrorResponse responseBody = new ErrorResponse(
 				apiErrorCode,
 				messageResolver.getMessage("message.invalid.arguments"),
-				errors.toArray(new TargetError[0])
+				errors
 		);
 
 		return new ResponseEntity<>(responseBody, apiErrorCode.getHttpStatus());
@@ -72,7 +72,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler({ConstraintViolationException.class})
 	public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
-		ArrayList<TargetError> errors = new ArrayList<>();
+		HashMap<String, String> errors = new HashMap<>();
 		ApiErrorCode apiErrorCode = ApiErrorCode.INVALID_ARGUMENTS;
 
 		// Constructs the path disregarding the first two path nodes.
@@ -84,13 +84,13 @@ public class GlobalExceptionHandler {
 				i++;
 			}
 			errorPath.deleteCharAt(errorPath.length() - 1);
-			errors.add(new TargetError(errorPath.toString(), violation.getMessage()));
+			errors.put(errorPath.toString(), violation.getMessage());
 		}
 
 		ErrorResponse responseBody = new ErrorResponse(
 				apiErrorCode,
 				messageResolver.getMessage("message.invalid.arguments"),
-				errors.toArray(new TargetError[0])
+				errors
 		);
 
 		return new ResponseEntity<>(responseBody, apiErrorCode.getHttpStatus());

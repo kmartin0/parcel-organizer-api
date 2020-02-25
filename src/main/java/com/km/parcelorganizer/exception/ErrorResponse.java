@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -23,18 +25,35 @@ class ErrorResponse implements Serializable {
 
 	// (Optional) Additional error information that the client code can use to handle
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private TargetError[] details;
+	private Map<String, String> details;
 
 	ErrorResponse(ApiErrorCode apiErrorCode, String description, TargetError... details) {
 		this.code = apiErrorCode.getHttpStatus().value();
 		this.description = description;
 		this.error = apiErrorCode.name();
-		this.details = details;
+		this.details = detailsArrToHashMap(details);
 	}
 
 	ErrorResponse(ApiErrorCode apiErrorCode, String description) {
 		this.code = apiErrorCode.getHttpStatus().value();
 		this.description = description;
 		this.error = apiErrorCode.name();
+	}
+
+	public ErrorResponse(ApiErrorCode apiErrorCode, String description, Map<String, String> details) {
+		this.code = apiErrorCode.getHttpStatus().value();
+		this.description = description;
+		this.error = apiErrorCode.name();
+		this.details = details;
+	}
+
+	private HashMap<String, String> detailsArrToHashMap(TargetError... details) {
+		if (details == null) return null;
+
+		HashMap<String, String> tmpDetails = new HashMap<>();
+		for (TargetError targetError : details) {
+			tmpDetails.put(targetError.getTarget(), targetError.getError());
+		}
+		return tmpDetails;
 	}
 }
