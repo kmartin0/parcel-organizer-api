@@ -24,5 +24,4 @@ public enum ApiErrorCode {
 	INTERNAL(HttpStatus.INTERNAL_SERVER_ERROR), // 500
 	UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE); // 503
 	private final HttpStatus httpStatus;
-
 }

@@ -164,8 +164,8 @@ class ParcelServiceTests {
 		user.setId(1L);
 
 		return Arrays.asList(
-				new Parcel(0L, user, "clothes", "zalando", "postnl", null, new ParcelStatus(0L, ParcelStatusEnum.SENT), new Date()),
-				new Parcel(1L, user, "watch", "bol.com", "postnl", null, new ParcelStatus(1L, ParcelStatusEnum.ORDERED), new Date())
+				new Parcel(0L, user, "clothes", "zalando", "postnl", null, null, new ParcelStatus(0L, ParcelStatusEnum.SENT), new Date()),
+				new Parcel(1L, user, "watch", "bol.com", "postnl", null, "Pick up at parcel point", new ParcelStatus(1L, ParcelStatusEnum.ORDERED), new Date())
 		);
 	}
 

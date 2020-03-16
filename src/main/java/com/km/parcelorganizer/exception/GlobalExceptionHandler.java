@@ -30,8 +30,8 @@ public class GlobalExceptionHandler {
 		this.messageResolver = messageResolver;
 	}
 
-	@ExceptionHandler({RuntimeException.class})
-	public ResponseEntity<ErrorResponse> handleRunTimeException(RuntimeException e) {
+	@ExceptionHandler({Exception.class})
+	public ResponseEntity<ErrorResponse> handleRunTimeException(Exception e) {
 		e.printStackTrace();
 		ApiErrorCode apiErrorCode = ApiErrorCode.INTERNAL;
 		ErrorResponse responseBody = new ErrorResponse(

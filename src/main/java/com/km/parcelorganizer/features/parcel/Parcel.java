@@ -50,6 +50,9 @@ public class Parcel {
 	@Column(name = "tracking_url", nullable = true, columnDefinition = "TEXT")
 	private String trackingUrl;
 
+	@Column(name = "additional_information", nullable = true, columnDefinition = "TEXT")
+	private String additionalInformation;
+
 	@ManyToOne
 	@JoinColumn(name = "parcel_status", nullable = false)
 	@NotNull(groups = {Create.class, Update.class})

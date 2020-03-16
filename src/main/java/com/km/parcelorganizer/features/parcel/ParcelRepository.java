@@ -17,4 +17,7 @@ public interface ParcelRepository extends CrudRepository<Parcel, Long> {
 	@QueryHints(value = {@QueryHint(name = CacheUtils.QUERY_HINT_CACHEABLE_KEY, value = CacheUtils.QUERY_HINT_CACHEABLE_TRUE)})
 	List<Parcel> findAllByUser(User user);
 
+	@QueryHints(value = {@QueryHint(name = CacheUtils.QUERY_HINT_CACHEABLE_KEY, value = CacheUtils.QUERY_HINT_CACHEABLE_TRUE)})
+	List<Parcel> findAllByUserOrderByLastUpdatedDesc(User user);
+
 }

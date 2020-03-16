@@ -47,8 +47,9 @@ public class ParcelServiceImpl implements IParcelService {
 	@Override
 	@PreAuthorize("isAuthenticated()")
 	public List<Parcel> getParcels() {
-		// Return the parcels owned by the authenticated user.
-		return parcelRepository.findAllByUser(SecurityHelper.getPrincipalUser());
+
+//		Return the parcels owned by the authenticated user.
+		return parcelRepository.findAllByUserOrderByLastUpdatedDesc(SecurityHelper.getPrincipalUser());
 	}
 
 	@Override
@@ -79,6 +80,10 @@ public class ParcelServiceImpl implements IParcelService {
 		parcel.setLastUpdated(new Date());
 		parcel.setId(parcelToUpdate.getId());
 		parcel.setUser(SecurityHelper.getPrincipalUser());
+
+		// Set the new parcel status.
+		ParcelStatus newParcelStatus = parcelStatusService.getParcelStatus(parcel.getParcelStatus().getId());
+		parcel.setParcelStatus(newParcelStatus);
 
 		// Save and return the updated parcel.
 		return parcelRepository.save(parcel);
