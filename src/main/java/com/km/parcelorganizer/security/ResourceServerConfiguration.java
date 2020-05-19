@@ -39,7 +39,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	@Autowired
 	public void configureGlobal(final AuthenticationManagerBuilder auth) {
 		auth.authenticationProvider(authProvider());
-
 	}
 
 	@Override
