@@ -1,11 +1,13 @@
+--liquibase formatted sql
+--changeset kevin martin:insert-dummy-data splitStatements:true endDelimiter:; --context:dev,prod,test
 -- #Password = secret
 INSERT INTO oauth_client_details
 (client_id, client_secret, scope, authorized_grant_types,
  authorities, access_token_validity, refresh_token_validity)
 VALUES ('parcel-organizer-android', '$2a$12$o3dmbF3ElqPL1ApJ.9R/Qu7cVBMyV8pn80.HPFPdKO/jerqGJiXZe', 'all',
         'password,refresh_token',
-        'ROLE_CLIENT', 172800, 604800);
-VALUES ('parcel-organizer-web', '$2a$12$o3dmbF3ElqPL1ApJ.9R/Qu7cVBMyV8pn80.HPFPdKO/jerqGJiXZe', 'all',
+        'ROLE_CLIENT', 172800, 604800),
+       ('parcel-organizer-web', '$2a$12$o3dmbF3ElqPL1ApJ.9R/Qu7cVBMyV8pn80.HPFPdKO/jerqGJiXZe', 'all',
         'password,refresh_token',
         'ROLE_CLIENT', 172800, 604800);
 

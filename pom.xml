@@ -21,6 +21,8 @@
         <hibernate.version>5.3.7.Final</hibernate.version>
         <lombok.version>1.16.8</lombok.version>
         <h2.version>1.4.197</h2.version>
+        <liquibase.version>3.9.0</liquibase.version>
+        <jacoco.version>0.8.2</jacoco.version>
     </properties>
 
     <dependencies>
@@ -98,6 +100,12 @@
             <version>${h2.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -105,10 +113,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.2</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -125,7 +134,43 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <propertyFileWillOverride>true</propertyFileWillOverride>
+                    <propertyFile>src/main/resources/liquibase/liquibase-${build.profile.id}.properties</propertyFile>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <build.profile.id>dev</build.profile.id>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <build.profile.id>prod</build.profile.id>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test</id>
+            <properties>
+                <build.profile.id>test</build.profile.id>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
