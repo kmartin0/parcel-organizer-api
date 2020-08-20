@@ -75,9 +75,15 @@
         <addUniqueConstraint columnNames="email" constraintName="uk_ob8kqyqqgmefl0aco34akdtpe" tableName="user"/>
     </changeSet>
     <changeSet author="kevin martin" id="v1.6" context="dev,prod,test">
-        <addForeignKeyConstraint baseColumnNames="user" baseTableName="parcel" constraintName="fke2gnqk3kry762kelebh59x310" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user" baseTableName="parcel"
+                                 constraintName="fke2gnqk3kry762kelebh59x310" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="user" validate="true"/>
     </changeSet>
     <changeSet author="kevin martin" id="v1.7" context="dev,prod,test">
-        <addForeignKeyConstraint baseColumnNames="parcel_status" baseTableName="parcel" constraintName="fkidmufr7g129bj0e66in9clkru" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="parcel_status" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="parcel_status" baseTableName="parcel"
+                                 constraintName="fkidmufr7g129bj0e66in9clkru" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="parcel_status" validate="true"/>
     </changeSet>
 </databaseChangeLog>

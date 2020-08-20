@@ -2,7 +2,7 @@ package com.km.parcelorganizer;
 
 import com.km.parcelorganizer.exception.ForbiddenException;
 import com.km.parcelorganizer.exception.ResourceAlreadyExistsException;
-import com.km.parcelorganizer.features.user.ChangePasswordDto;
+import com.km.parcelorganizer.features.user.password.ChangePasswordDto;
 import com.km.parcelorganizer.features.user.User;
 import com.km.parcelorganizer.features.user.UserRepository;
 import com.km.parcelorganizer.features.user.UserServiceImpl;

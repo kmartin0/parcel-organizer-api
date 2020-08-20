@@ -2,6 +2,7 @@ package com.km.parcelorganizer.features.user;
 
 import com.km.parcelorganizer.exception.ForbiddenException;
 import com.km.parcelorganizer.exception.ResourceAlreadyExistsException;
+import com.km.parcelorganizer.features.user.password.*;
 import com.km.parcelorganizer.security.SecurityHelper;
 import com.km.parcelorganizer.util.MessageResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Validated
@@ -18,13 +23,16 @@ public class UserServiceImpl implements IUserService {
 
 	private final UserRepository userRepository;
 
+	private final PasswordTokenRepository passwordTokenRepository;
+
 	private final PasswordEncoder passwordEncoder;
 
 	private final MessageResolver messageResolver;
 
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, MessageResolver messageResolver) {
+	public UserServiceImpl(UserRepository userRepository, PasswordTokenRepository passwordTokenRepository, PasswordEncoder passwordEncoder, MessageResolver messageResolver) {
 		this.userRepository = userRepository;
+		this.passwordTokenRepository = passwordTokenRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.messageResolver = messageResolver;
 	}
@@ -113,4 +121,47 @@ public class UserServiceImpl implements IUserService {
 		}
 	}
 
+	@Override
+	public void forgotPassword(ForgotPasswordDto forgotPasswordDto) {
+		// Find the User the email belongs to.
+		Optional<User> dbUser = userRepository.findByEmail(forgotPasswordDto.getEmail());
+		LocalDateTime localDate = LocalDateTime.now().plusDays(7);
+
+		// If user exists create password token and store in repository.
+		dbUser.ifPresent(user -> {
+			PasswordToken passwordToken = PasswordToken.builder()
+					.token(UUID.randomUUID().toString())
+					.user(user)
+					.expiration(Date.from(localDate.atZone(ZoneId.systemDefault()).toInstant()))
+					.build();
+
+			passwordTokenRepository.save(passwordToken);
+
+			// TODO: Send mail with reset token link to web app.
+		});
+	}
+
+	@Override
+	public void resetPassword(ResetPasswordDto resetPasswordDto) {
+		// Find the token
+		String token = resetPasswordDto.getToken();
+		Optional<PasswordToken> passwordToken = passwordTokenRepository.findByToken(token);
+
+		// Throw forbidden exception when password token not present or expired.
+		if (!passwordToken.isPresent() || passwordToken.get().getExpiration().before(new Date())) {
+			throw new ForbiddenException(
+					messageResolver.getMessage("message.reset.password.forbidden"),
+					"token",
+					messageResolver.getMessage("invalid")
+			);
+		}
+
+		// Change the password and save.
+		User user = passwordToken.get().getUser();
+		user.setPassword(passwordEncoder.encode(resetPasswordDto.getNewPassword()));
+		userRepository.save(user);
+
+		// Remove the token from repository.
+		passwordTokenRepository.delete(passwordToken.get());
+	}
 }
