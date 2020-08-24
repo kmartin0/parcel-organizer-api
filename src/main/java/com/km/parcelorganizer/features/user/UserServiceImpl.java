@@ -2,15 +2,21 @@ package com.km.parcelorganizer.features.user;
 
 import com.km.parcelorganizer.exception.ForbiddenException;
 import com.km.parcelorganizer.exception.ResourceAlreadyExistsException;
+import com.km.parcelorganizer.exception.ResourceNotFoundException;
+import com.km.parcelorganizer.features.email.EmailService;
 import com.km.parcelorganizer.features.user.password.*;
 import com.km.parcelorganizer.security.SecurityHelper;
 import com.km.parcelorganizer.util.MessageResolver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -29,12 +35,15 @@ public class UserServiceImpl implements IUserService {
 
 	private final MessageResolver messageResolver;
 
+	private final EmailService emailService;
+
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, PasswordTokenRepository passwordTokenRepository, PasswordEncoder passwordEncoder, MessageResolver messageResolver) {
+	public UserServiceImpl(UserRepository userRepository, PasswordTokenRepository passwordTokenRepository, PasswordEncoder passwordEncoder, MessageResolver messageResolver, EmailService emailService) {
 		this.userRepository = userRepository;
 		this.passwordTokenRepository = passwordTokenRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.messageResolver = messageResolver;
+		this.emailService = emailService;
 	}
 
 	@Override
@@ -137,7 +146,13 @@ public class UserServiceImpl implements IUserService {
 
 			passwordTokenRepository.save(passwordToken);
 
-			// TODO: Send mail with reset token link to web app.
+			// Send an email with the reset link
+			try {
+				emailService.sendForgotPasswordEmail(user, passwordToken);
+			} catch (MessagingException e) { // If an error occurred while sending the email remove token and throw runtime exception which lets the api return an internal server error.
+				passwordTokenRepository.delete(passwordToken);
+				throw new RuntimeException();
+			}
 		});
 	}
 
