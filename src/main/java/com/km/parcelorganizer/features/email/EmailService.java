@@ -22,8 +22,8 @@ public class EmailService {
 
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
-		helper.setTo(user.getEmail());
-		helper.setFrom("info@kmartin.nl");
+		helper.setTo("kevin.martin@live.nl");
+		helper.setFrom("parcelorganizer@gmail.com");
 		helper.setSubject("Recover Parcel Organizer Password");
 		helper.setText("<html>\n" +
 				"\n" +
