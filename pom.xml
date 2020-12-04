@@ -20,6 +20,9 @@
         <oauth2.autoconfigure.version>2.1.4.RELEASE</oauth2.autoconfigure.version>
         <hibernate.version>5.3.7.Final</hibernate.version>
         <lombok.version>1.16.8</lombok.version>
+        <h2.version>1.4.197</h2.version>
+        <liquibase.version>3.9.0</liquibase.version>
+        <jacoco.version>0.8.2</jacoco.version>
     </properties>
 
     <dependencies>
@@ -64,6 +67,11 @@
             <version>${oauth2.autoconfigure.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!-- Database -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -90,6 +98,25 @@
             <version>${hibernate.version}</version>
         </dependency>
 
+        <!-- H2 Database for tests -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sendgrid</groupId>
+            <artifactId>sendgrid-java</artifactId>
+            <version>4.6.3</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -97,10 +124,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.2</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -117,7 +145,43 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <propertyFileWillOverride>true</propertyFileWillOverride>
+                    <propertyFile>src/main/resources/liquibase/liquibase-${build.profile.id}.properties</propertyFile>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <build.profile.id>dev</build.profile.id>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <build.profile.id>prod</build.profile.id>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test</id>
+            <properties>
+                <build.profile.id>test</build.profile.id>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

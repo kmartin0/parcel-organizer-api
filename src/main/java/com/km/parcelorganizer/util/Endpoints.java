@@ -7,6 +7,8 @@ public class Endpoints {
 	public static final String UPDATE_USER = "/users";
 	public static final String DELETE_USER = "/users";
 	public static final String CHANGE_PASSWORD = "/users/change-password";
+	public static final String FORGOT_PASSWORD = "/users/forgot-password";
+	public static final String RESET_PASSWORD = "/users/reset-password";
 
 	// Parcel Endpoints
 	public static final String SAVE_PARCEL = "/parcels";

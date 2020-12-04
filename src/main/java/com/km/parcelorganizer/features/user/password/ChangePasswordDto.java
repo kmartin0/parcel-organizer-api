@@ -1,4 +1,4 @@
-package com.km.parcelorganizer.features.user;
+package com.km.parcelorganizer.features.user.password;
 
 
 import lombok.Data;

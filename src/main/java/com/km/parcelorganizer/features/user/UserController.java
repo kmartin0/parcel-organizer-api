@@ -1,5 +1,8 @@
 package com.km.parcelorganizer.features.user;
 
+import com.km.parcelorganizer.features.user.password.ChangePasswordDto;
+import com.km.parcelorganizer.features.user.password.ForgotPasswordDto;
+import com.km.parcelorganizer.features.user.password.ResetPasswordDto;
 import com.km.parcelorganizer.util.Endpoints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +58,20 @@ public class UserController {
 	public void changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
 
 		userService.changePassword(changePasswordDto);
+	}
+
+	@PostMapping(path = Endpoints.FORGOT_PASSWORD)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto) {
+
+		userService.forgotPassword(forgotPasswordDto);
+	}
+
+	@PostMapping(path = Endpoints.RESET_PASSWORD)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
+
+		userService.resetPassword(resetPasswordDto);
 	}
 
 }

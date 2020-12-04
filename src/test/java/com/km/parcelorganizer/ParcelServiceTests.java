@@ -28,6 +28,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.*;
 
+import static org.mockito.ArgumentMatchers.any;
+
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
 @SpringBootTest
@@ -69,7 +71,7 @@ class ParcelServiceTests {
 	@Test
 	void getParcels_returnsTestData() {
 		User authenticatedUser = setAuthenticatedUser();
-		Mockito.when(parcelRepository.findAllByUser(authenticatedUser)).thenReturn(getTestParcels());
+		Mockito.when(parcelRepository.findAllByUserOrderByLastUpdatedDesc(authenticatedUser)).thenReturn(getTestParcels());
 		Assertions.assertEquals(getTestParcels(), parcelService.getParcels());
 	}
 
@@ -103,11 +105,14 @@ class ParcelServiceTests {
 		setAuthenticatedUser();
 		Parcel parcelToUpdate = getTestParcels().get(0);
 		Mockito.when(parcelRepository.findById(parcelToUpdate.getId())).thenReturn(Optional.of(parcelToUpdate));
+		Mockito.when(parcelStatusService.getParcelStatus(parcelToUpdate.getParcelStatus().getId())).thenReturn(parcelToUpdate.getParcelStatus());
 
 		parcelToUpdate.setTitle("newTitle");
-		parcelService.updateParcel(parcelToUpdate);
+		Mockito.when(parcelRepository.save(any())).thenReturn(parcelToUpdate);
+		Parcel result = parcelService.updateParcel(parcelToUpdate);
 
-		Set<ConstraintViolation<Parcel>> constraintViolations = validator.validate(parcelToUpdate, Parcel.Update.class);
+		Set<ConstraintViolation<Parcel>> constraintViolations = validator.validate(result, Parcel.Update.class);
+
 		Assertions.assertEquals(0, constraintViolations.size());
 		Mockito.verify(parcelRepository, Mockito.times(1)).save(parcelToUpdate);
 	}
