@@ -2,6 +2,7 @@ package com.km.parcelorganizer.features.email;
 
 import com.km.parcelorganizer.features.user.User;
 import com.km.parcelorganizer.features.user.password.PasswordToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,9 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
+
+	@Value("${mail.from}")
+	private String mailFrom;
 
 	private final JavaMailSender javaMailSender;
 
@@ -22,8 +26,8 @@ public class EmailService {
 
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
-		helper.setTo("kevin.martin@live.nl");
-		helper.setFrom("parcelorganizer@gmail.com");
+		helper.setTo(user.getEmail());
+		helper.setFrom(mailFrom);
 		helper.setSubject("Recover Parcel Organizer Password");
 		helper.setText("<html>\n" +
 				"\n" +

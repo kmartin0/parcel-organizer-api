@@ -41,9 +41,13 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 		auth.authenticationProvider(authProvider());
 	}
 
+	/**
+	 * Configures the http security for all requests to require no security because we are using
+	 * GlobalMethodSecurity at the controller level. The Oauth2 and Basic authentication are enabled and
+	 * the session policy is set to Stateless.
+	 */
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-
 		http.cors().and().csrf().disable()
 				.authorizeRequests()
 				.antMatchers("/**")
