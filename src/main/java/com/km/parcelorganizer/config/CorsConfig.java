@@ -28,6 +28,8 @@ public class CorsConfig {
 		//Important. tell Spring to load this filter at the right point in the chain
 		//(with an order of precedence higher than oauth2's filters)
 		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		bean.addUrlPatterns("*"); // Set bean to all url patterns so the authorization server will also use this cors policy.
+
 		return bean;
 	}
 }
