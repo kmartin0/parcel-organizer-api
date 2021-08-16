@@ -13,10 +13,10 @@ VALUES ('parcel-organizer-android', '$2a$12$o3dmbF3ElqPL1ApJ.9R/Qu7cVBMyV8pn80.H
 
 -- #Password = pass
 INSERT INTO "user"(password, name, email)
-VALUES ('$2a$12$Uv6GCKwJk7SaEPpy/h/dM.Qf4/BE5OTLc.31cPYrPc/Sl/LhUO1GO', 'kev', 'kev@live.nl'),
-       ('$2a$12$Uv6GCKwJk7SaEPpy/h/dM.Qf4/BE5OTLc.31cPYrPc/Sl/LhUO1GO', 'Kevin', 'kevin@live.nl'),
-       ('$2a$12$Uv6GCKwJk7SaEPpy/h/dM.Qf4/BE5OTLc.31cPYrPc/Sl/LhUO1GO', 'K. Martin', 'kmartin0@live.nl'),
-       ('$2a$12$Uv6GCKwJk7SaEPpy/h/dM.Qf4/BE5OTLc.31cPYrPc/Sl/LhUO1GO', 'k', 'k@live.nl');
+VALUES ('$2a$12$Uv6GCKwJk7SaEPpy/h/dM.Qf4/BE5OTLc.31cPYrPc/Sl/LhUO1GO', 'Ross Smith', 'rosssmith@email.com'),
+       ('$2a$12$Uv6GCKwJk7SaEPpy/h/dM.Qf4/BE5OTLc.31cPYrPc/Sl/LhUO1GO', 'Jane Doe', 'janedoe@email.com'),
+       ('$2a$12$Uv6GCKwJk7SaEPpy/h/dM.Qf4/BE5OTLc.31cPYrPc/Sl/LhUO1GO', 'John Doe', 'johndoe@email.com'),
+       ('$2a$12$Uv6GCKwJk7SaEPpy/h/dM.Qf4/BE5OTLc.31cPYrPc/Sl/LhUO1GO', 'Suzie Johnson', 'suziejohnson@email.com');
 
 INSERT INTO parcel_status(status)
 VALUES ('ORDERED'),

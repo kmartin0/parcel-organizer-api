@@ -18,7 +18,9 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -76,14 +78,25 @@ public class GlobalExceptionHandler {
 		ApiErrorCode apiErrorCode = ApiErrorCode.INVALID_ARGUMENTS;
 
 		// Constructs the path disregarding the first two path nodes.
-		for (ConstraintViolation violation : e.getConstraintViolations()) {
-			int i = 0;
+		for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
+			ArrayList<Path.Node> violationPropertyPaths = new ArrayList<>();
+			violation.getPropertyPath().iterator().forEachRemaining(violationPropertyPaths::add);
+
 			StringBuilder errorPath = new StringBuilder();
-			for (Path.Node node : violation.getPropertyPath()) {
-				if (i > 1) errorPath.append(node.getName()).append(".");
-				i++;
+
+			// Ignore method and object path if the property path is nested.
+			int startIndex = 0;
+			if (violationPropertyPaths.size() > 1) startIndex = 1;
+			if (violationPropertyPaths.size() > 2) startIndex = 2;
+
+			for (int i = startIndex; i < violationPropertyPaths.size(); i++) {
+				// Append the path.
+				errorPath.append(violationPropertyPaths.get(i));
+
+				// Append a dot between paths.
+				if (i < violationPropertyPaths.size() - 1) errorPath.append(".");
 			}
-			errorPath.deleteCharAt(errorPath.length() - 1);
+
 			errors.put(errorPath.toString(), violation.getMessage());
 		}
 
