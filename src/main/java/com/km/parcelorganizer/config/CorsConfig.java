@@ -18,7 +18,14 @@ public class CorsConfig {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.setAllowedOrigins(Arrays.asList("http://192.168.1.17:4200", "http://localhost:4200", "https://parcel-organizer-web.herokuapp.com", "http://parcel-organizer-web.herokuapp.com"));
+		config.setAllowedOrigins(
+				Arrays.asList(
+						"http://localhost:4200",
+						"https://parcel-organizer-web.herokuapp.com",
+						"http://parcel-organizer-web.herokuapp.com",
+						"https://parcelorganizer.kmartin.nl"
+				)
+		);
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		config.setExposedHeaders(Collections.singletonList("WWW-Authenticate"));
