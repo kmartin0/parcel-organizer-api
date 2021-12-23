@@ -20,7 +20,7 @@
         <oauth2.autoconfigure.version>2.1.4.RELEASE</oauth2.autoconfigure.version>
         <hibernate.version>5.3.7.Final</hibernate.version>
         <lombok.version>1.18.22</lombok.version>
-        <h2.version>1.4.197</h2.version>
+        <h2.version>2.0.202</h2.version>
         <liquibase.version>3.9.0</liquibase.version>
         <jacoco.version>0.8.2</jacoco.version>
     </properties>
