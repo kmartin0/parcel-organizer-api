@@ -1,4 +1,6 @@
-FROM maven:3.8.3-adoptopenjdk-8 as build
+# syntax=docker/dockerfile:1
+
+FROM maven:3.6.0-jdk-8-slim as build
 WORKDIR /workspace/app
 
 COPY mvnw .
