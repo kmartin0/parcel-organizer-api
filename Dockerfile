@@ -1,4 +1,4 @@
-FROM maven:3.8.4-jdk-8 as build
+FROM maven:3.8.3-adoptopenjdk-8 as build
 WORKDIR /workspace/app
 
 COPY mvnw .
