@@ -1,0 +1,15 @@
+services:
+  parcel-organizer-production:
+    restart: always
+    image: parcel-organizer-api
+    build:
+      context: .
+    container_name: parcel-organizer-api
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - JDBC_DATABASE_URL=jdbc:postgresql://host.docker.internal:5432/db_parcel_organizer
+      - JDBC_DATABASE_USERNAME=postgres
+      - JDBC_DATABASE_PASSWORD=root
+      - JWT_SIGNING_KEY=MY_SECRET_KEY
+    ports:
+      - 8080:8080
