@@ -1,3 +1,4 @@
+version: "3"
 services:
   parcel-organizer-production:
     restart: always
@@ -11,5 +12,7 @@ services:
       - JDBC_DATABASE_USERNAME=postgres
       - JDBC_DATABASE_PASSWORD=root
       - JWT_SIGNING_KEY=MY_SECRET_KEY
+      - PO_GOOGLE_APP_USERNAME=DUMMY_EMAIL@EMAIL.COM
+      - PO_GOOGLE_APP_PASSWORD=DUMMY_EMAIL_PASWORD
     ports:
-      - 8080:8080
+      - "8080:8080"
