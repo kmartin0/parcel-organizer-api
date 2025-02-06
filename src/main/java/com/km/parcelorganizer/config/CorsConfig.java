@@ -21,8 +21,6 @@ public class CorsConfig {
 		config.setAllowedOrigins(
 				Arrays.asList(
 						"http://localhost:4200",
-						"https://parcel-organizer-web.herokuapp.com",
-						"http://parcel-organizer-web.herokuapp.com",
 						"https://parcelorganizer.kmartin.nl"
 				)
 		);
