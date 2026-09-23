@@ -152,36 +152,9 @@
                 <version>${liquibase.version}</version>
                 <configuration>
                     <propertyFileWillOverride>true</propertyFileWillOverride>
-                    <propertyFile>src/main/resources/liquibase/liquibase-${build.profile.id}.properties</propertyFile>
+                    <propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <build.profile.id>dev</build.profile.id>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-
-        <profile>
-            <id>prod</id>
-            <properties>
-                <build.profile.id>prod</build.profile.id>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>test</id>
-            <properties>
-                <build.profile.id>test</build.profile.id>
-            </properties>
-        </profile>
-    </profiles>
-
 </project>

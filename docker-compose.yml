@@ -1,17 +1,15 @@
-version: "3"
 services:
-  parcel-organizer-production:
+  parcel-organizer-api-development:
     restart: always
-    image: parcel-organizer-api
+    image: parcel-organizer-api-development
+    container_name: parcel-organizer-api-development
     build:
       context: .
-    container_name: parcel-organizer-api
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_PROFILES_ACTIVE=dev
       - JDBC_DATABASE_URL=jdbc:postgresql://host.docker.internal:5432/db_parcel_organizer
       - JDBC_DATABASE_USERNAME=postgres
       - JDBC_DATABASE_PASSWORD=root
-      - JWT_SIGNING_KEY=MY_SECRET_KEY
       - PO_GOOGLE_APP_USERNAME=DUMMY_EMAIL@EMAIL.COM
       - PO_GOOGLE_APP_PASSWORD=DUMMY_EMAIL_PASWORD
     ports:

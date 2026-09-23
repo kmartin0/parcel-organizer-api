@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet author="kevin martin" id="v1.1" context="dev,prod,test">
+    <changeSet author="kevin martin" id="v1.1">
         <createTable tableName="parcel">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="parcel_pkey"/>
@@ -28,7 +28,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="kevin martin" id="v1.2" context="dev,prod,test">
+    <changeSet author="kevin martin" id="v1.2">
         <createTable tableName="parcel_status">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="parcel_status_pkey"/>
@@ -38,7 +38,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="kevin martin" id="v1.3" context="dev,prod,test">
+    <changeSet author="kevin martin" id="v1.3">
         <createTable tableName="user">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="user_pkey"/>
@@ -54,7 +54,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="kevin martin" id="v1.4" context="dev,prod,test">
+    <changeSet author="kevin martin" id="v1.4">
         <createTable tableName="oauth_client_details">
             <column name="client_id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="oauth_client_details_pkey"/>
@@ -71,16 +71,16 @@
             <column name="web_server_redirect_uri" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="kevin martin" id="v1.5" context="dev,prod,test">
+    <changeSet author="kevin martin" id="v1.5">
         <addUniqueConstraint columnNames="email" constraintName="uk_ob8kqyqqgmefl0aco34akdtpe" tableName="user"/>
     </changeSet>
-    <changeSet author="kevin martin" id="v1.6" context="dev,prod,test">
+    <changeSet author="kevin martin" id="v1.6">
         <addForeignKeyConstraint baseColumnNames="user" baseTableName="parcel"
                                  constraintName="fke2gnqk3kry762kelebh59x310" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="user" validate="true"/>
     </changeSet>
-    <changeSet author="kevin martin" id="v1.7" context="dev,prod,test">
+    <changeSet author="kevin martin" id="v1.7">
         <addForeignKeyConstraint baseColumnNames="parcel_status" baseTableName="parcel"
                                  constraintName="fkidmufr7g129bj0e66in9clkru" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"

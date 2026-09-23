@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset kevin martin:insert-dummy-data splitStatements:true endDelimiter:; --context:dev,prod,test
+--changeset kevin martin:insert-dummy-data splitStatements:true endDelimiter:;
 -- #Password = secret
 INSERT INTO oauth_client_details
 (client_id, client_secret, scope, authorized_grant_types,
