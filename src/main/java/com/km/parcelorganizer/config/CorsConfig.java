@@ -8,22 +8,21 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
 public class CorsConfig {
+
     @Bean
     public FilterRegistrationBean<CorsFilter> customCorsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = buildCorsConfiguration();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", buildCorsConfiguration());
+
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
 
-        //Important. tell Spring to load this filter at the right point in the chain
-        //(with an order of precedence higher than oauth2's filters)
+        // Load CORS before OAuth2 filters and apply it to all endpoints.
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        bean.addUrlPatterns("*"); // Set bean to all url patterns so the authorization server will also use this cors policy.
+        bean.addUrlPatterns("*");
 
         return bean;
     }
@@ -32,15 +31,10 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration() {
             @Override
             public String checkOrigin(String requestOrigin) {
-                if (requestOrigin == null) {
-                    return null;
-                }
-                // Allow any port on localhost/127.0.0.1, plus production
-                if (requestOrigin.startsWith("http://localhost:") ||
-                        requestOrigin.startsWith("http://127.0.0.1:") ||
-                        requestOrigin.equals("https://parcelorganizer.kmartin.nl")) {
+                if (requestOrigin != null && isAllowedOrigin(requestOrigin)) {
                     return requestOrigin;
                 }
+
                 return null;
             }
         };
@@ -51,5 +45,12 @@ public class CorsConfig {
         config.setExposedHeaders(Collections.singletonList("WWW-Authenticate"));
 
         return config;
+    }
+
+    private boolean isAllowedOrigin(String origin) {
+        return origin.startsWith("http://localhost:") ||
+                origin.startsWith("http://127.0.0.1:") ||
+                origin.startsWith("http://192.168.1.") ||
+                origin.equals("https://parcelorganizer.kmartin.nl");
     }
 }

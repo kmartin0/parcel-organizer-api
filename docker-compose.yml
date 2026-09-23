@@ -6,11 +6,11 @@ services:
     build:
       context: .
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - JDBC_DATABASE_URL=jdbc:postgresql://host.docker.internal:5432/db_parcel_organizer
-      - JDBC_DATABASE_USERNAME=postgres
-      - JDBC_DATABASE_PASSWORD=root
-      - PO_GOOGLE_APP_USERNAME=DUMMY_EMAIL@EMAIL.COM
-      - PO_GOOGLE_APP_PASSWORD=DUMMY_EMAIL_PASWORD
+      SPRING_PROFILES_ACTIVE: dev
+      JDBC_DATABASE_URL: jdbc:postgresql://host.docker.internal:5432/db_parcel_organizer
+      JDBC_DATABASE_USERNAME: postgres
+      JDBC_DATABASE_PASSWORD: root
+      PO_GOOGLE_APP_USERNAME: DUMMY_EMAIL@EMAIL.COM
+      PO_GOOGLE_APP_PASSWORD: DUMMY_EMAIL_PASWORD
     ports:
       - "8080:8080"
