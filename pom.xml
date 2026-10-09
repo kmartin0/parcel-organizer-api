@@ -8,11 +8,11 @@
         <version>2.1.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.km</groupId>
-    <artifactId>parcel-organizer</artifactId>
+    <groupId>nl.kmartin</groupId>
+    <artifactId>parcel-organizer-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>parcel organizer</name>
-    <description>Parcel Organizer Api</description>
+    <name>Parcel Organizer API</name>
+    <description>REST API for the Parcel Organizer platform</description>
 
     <properties>
         <java.version>1.8</java.version>
