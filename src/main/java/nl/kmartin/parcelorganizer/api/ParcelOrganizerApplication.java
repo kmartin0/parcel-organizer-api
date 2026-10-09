@@ -1,4 +1,4 @@
-package nl.kmartin.parcelorganizer;
+package nl.kmartin.parcelorganizer.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
